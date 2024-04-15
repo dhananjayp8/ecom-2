@@ -21,7 +21,110 @@ const CartDetails = () => {
                 )}
               </div>
             </div>
-            <div className="card-body p-0"></div>
+            <div className="card-body p-0">
+              {arr.length === 0 ? (
+                <table className="table cart-table mb-0">
+                  <tbody>
+                    <tr>
+                      <td colSpan={6}>
+                        <div className="cart-empty">
+                          <i className="fa fa-shopping-cart"></i>
+                          <p>Your Cart Is Empty</p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <table className="table cart-table mb-0 table-responsive-sm">
+                  <thead>
+                    <tr>
+                      <th>Action</th>
+                      <th>Product</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th className="text-right">
+                        {" "}
+                        <span id="amount" className="amount">
+                          Total Amount
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {arr.map((data, index) => {
+                      return (
+                        <>
+                          <tr>
+                            <td>
+                              <button
+                                className="prdct-delete"
+                                //onClick={()=>handleDecrement(data.id)}
+                              >
+                                <i className="fa fa-trash-alt"></i>
+                              </button>
+                            </td>
+                            <td>
+                              <div className="product-img">
+                                <img src="/logo192.png" alt="" />
+                              </div>
+                            </td>
+                            <td>
+                              <div className="product-name">
+                                <p>punjabi</p>
+                              </div>
+                            </td>
+                            <td>420</td>
+                            <td>
+                              <div className="prdct-qty-container">
+                                <button
+                                  className="prdct-qty-btn"
+                                  type="button"
+                                  //onClick={data.qnty <=1 ?()=>handleDecrement(data.id) :()=>handleSingleDecrement(data)}
+                                >
+                                  <i className="fa fa-minus"></i>
+                                </button>
+                                <input
+                                  type="text"
+                                  className="qty-input-box"
+                                  value={2}
+                                  disabled
+                                  name=""
+                                  id=""
+                                />
+                                <button
+                                  className="prdct-qty-btn"
+                                  type="button"
+                                  //</div>onClick={()=>handleIncrement(data)}
+                                >
+                                  <i className="fa fa-plus"></i>
+                                </button>
+                              </div>
+                            </td>
+                            <td className="text-right">400</td>
+                          </tr>
+                        </>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>&nbsp</th>
+                      <th colSpan={3}>&nbsp</th>
+                      <th>
+                        Items in Cart<span className="ml-2 mr-2"></span>
+                        <span className="text-danger">4</span>
+                      </th>
+                      <th className="text-right">
+                        Total Price <span className="ml-2 mr-2">:</span>
+                        <span className="text-danger">4</span>
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       </div>
