@@ -3,8 +3,17 @@ import "./Style.css";
 import Cardsdata from "./CartData";
 import { Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
+import { addToCart } from "../redux/features/cartSlice";
+import { useDispatch } from "react-redux";
 const Home = () => {
   const [cartData, setCartData] = useState(Cardsdata);
+  const dispatch = useDispatch();
+
+  //add to cart
+
+  const send = (e) => {
+    dispatch(addToCart(e));
+  };
   return (
     <>
       <section className="iteam_section mt-4 container">
@@ -45,7 +54,7 @@ const Home = () => {
                         }}
                         variant="outline-light"
                         className="mt-2 mb-2"
-                        //onClick={()=>send(element)}
+                        onClick={() => send(element)}
                       >
                         Add TO Cart
                       </Button>

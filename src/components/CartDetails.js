@@ -1,8 +1,14 @@
 import React from "react";
 import "./CartStyle.css";
-
+import { UseDispatch, useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/features/cartSlice";
 const CartDetails = () => {
-  const arr = [0, 1];
+  const { carts } = useSelector((state) => state.allCart);
+  //console.log(carts);
+  const dispatch = useDispatch();
+  const handleIncrement = (e) => {
+    dispatch(addToCart(e));
+  };
   return (
     <>
       <div className="row justify-content-center m-0">
@@ -10,8 +16,10 @@ const CartDetails = () => {
           <div className="card">
             <div className="card-header bg-dark p-3">
               <div className="card-header-flex">
-                <h5 className="text-white m-0">Cart Calculation(1)</h5>
-                {arr.length > 0 ? (
+                <h5 className="text-white m-0">
+                  Cart Calculation{carts.length > 0 ? `(${carts.lenngth})` : ""}
+                </h5>
+                {carts.length > 0 ? (
                   <button className="btn btn-danger mt-0 btn-sm">
                     <i className="fa fa-trash-alt mr-2"></i>
                     <span>Empty Cart</span>
@@ -22,7 +30,7 @@ const CartDetails = () => {
               </div>
             </div>
             <div className="card-body p-0">
-              {arr.length === 0 ? (
+              {carts.length === 0 ? (
                 <table className="table cart-table mb-0">
                   <tbody>
                     <tr>
@@ -53,29 +61,30 @@ const CartDetails = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {arr.map((data, index) => {
+                    {carts.map((data, index) => {
+                      console.log("info", data);
                       return (
                         <>
                           <tr>
                             <td>
                               <button
                                 className="prdct-delete"
-                                //onClick={()=>handleDecrement(data.id)}
+                                //onClick={() => handleDecrement(data.id)}
                               >
                                 <i className="fa fa-trash-alt"></i>
                               </button>
                             </td>
                             <td>
                               <div className="product-img">
-                                <img src="/logo192.png" alt="" />
+                                <img src={data.imgdata} alt="" />
                               </div>
                             </td>
                             <td>
                               <div className="product-name">
-                                <p>punjabi</p>
+                                <p>{data.dish}</p>
                               </div>
                             </td>
-                            <td>420</td>
+                            <td>{data.price}</td>
                             <td>
                               <div className="prdct-qty-container">
                                 <button
@@ -88,7 +97,7 @@ const CartDetails = () => {
                                 <input
                                   type="text"
                                   className="qty-input-box"
-                                  value={2}
+                                  value={data.qnty}
                                   disabled
                                   name=""
                                   id=""
@@ -96,13 +105,15 @@ const CartDetails = () => {
                                 <button
                                   className="prdct-qty-btn"
                                   type="button"
-                                  //</div>onClick={()=>handleIncrement(data)}
+                                  onClick={() => handleIncrement(data)}
                                 >
                                   <i className="fa fa-plus"></i>
                                 </button>
                               </div>
                             </td>
-                            <td className="text-right">400</td>
+                            <td className="text-right">
+                              {data.price * data.qnty}
+                            </td>
                           </tr>
                         </>
                       );
@@ -110,8 +121,8 @@ const CartDetails = () => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th>&nbsp</th>
-                      <th colSpan={3}>&nbsp</th>
+                      <th>&nbsp;</th>
+                      <th colSpan={3}>&nbsp;</th>
                       <th>
                         Items in Cart<span className="ml-2 mr-2"></span>
                         <span className="text-danger">4</span>
