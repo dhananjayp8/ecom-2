@@ -1,14 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CartStyle.css";
 import { UseDispatch, useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../redux/features/cartSlice";
+import {
+  addToCart,
+  removeToCart,
+  removeSingleItem,
+  emptycartItem,
+} from "../redux/features/cartSlice";
+import toast, { Toaster } from "react-hot-toast";
+
 const CartDetails = () => {
   const { carts } = useSelector((state) => state.allCart);
   //console.log(carts);
+
+  const [totalprice, settotalPrice] = useState(0);
+  const [totalquantity, settotalQuantity] = useState(0);
   const dispatch = useDispatch();
   const handleIncrement = (e) => {
     dispatch(addToCart(e));
   };
+  //remove cart
+  const handleDecrement = (e) => {
+    dispatch(removeToCart(e));
+    toast.success("Item removed from your cart");
+  };
+  //single removal
+  const handleSingleDecrement = (e) => {
+    dispatch(removeSingleItem(e));
+  };
+  // empty cart
+  const emptyCart = () => {
+    dispatch(emptycartItem());
+    toast.success("Your cart is empty");
+  };
+  const total = () => {
+    let totalPrice = 0;
+    carts.map((ele, index) => {
+      totalPrice = ele.price * ele.qnty + totalPrice;
+    });
+    settotalPrice(totalPrice);
+  };
+  const totalQnty = () => {
+    let totalQuantity = 0;
+    carts.map((ele, index) => {
+      totalQuantity = ele.qnty + totalQuantity;
+    });
+    settotalQuantity(totalQuantity);
+  };
+  useEffect(() => {
+    total();
+  }, [total]);
+  useEffect(() => {
+    totalQnty();
+  }, [totalQnty]);
+
   return (
     <>
       <div className="row justify-content-center m-0">
@@ -20,7 +65,10 @@ const CartDetails = () => {
                   Cart Calculation{carts.length > 0 ? `(${carts.lenngth})` : ""}
                 </h5>
                 {carts.length > 0 ? (
-                  <button className="btn btn-danger mt-0 btn-sm">
+                  <button
+                    className="btn btn-danger mt-0 btn-sm"
+                    onClick={emptyCart}
+                  >
                     <i className="fa fa-trash-alt mr-2"></i>
                     <span>Empty Cart</span>
                   </button>
@@ -69,7 +117,7 @@ const CartDetails = () => {
                             <td>
                               <button
                                 className="prdct-delete"
-                                //onClick={() => handleDecrement(data.id)}
+                                onClick={() => handleDecrement(data.id)}
                               >
                                 <i className="fa fa-trash-alt"></i>
                               </button>
@@ -80,8 +128,8 @@ const CartDetails = () => {
                               </div>
                             </td>
                             <td>
-                              <div className="product-name">
-                                <p>{data.dish}</p>
+                              <div className="product-name ">
+                                <p className="mt-3">{data.dish}</p>
                               </div>
                             </td>
                             <td>{data.price}</td>
@@ -90,7 +138,11 @@ const CartDetails = () => {
                                 <button
                                   className="prdct-qty-btn"
                                   type="button"
-                                  //onClick={data.qnty <=1 ?()=>handleDecrement(data.id) :()=>handleSingleDecrement(data)}
+                                  onClick={
+                                    data.qnty <= 1
+                                      ? () => handleDecrement(data.id)
+                                      : () => handleSingleDecrement(data)
+                                  }
                                 >
                                   <i className="fa fa-minus"></i>
                                 </button>
@@ -125,11 +177,11 @@ const CartDetails = () => {
                       <th colSpan={3}>&nbsp;</th>
                       <th>
                         Items in Cart<span className="ml-2 mr-2"></span>
-                        <span className="text-danger">4</span>
+                        <span className="text-danger">{totalquantity}</span>
                       </th>
                       <th className="text-right">
                         Total Price <span className="ml-2 mr-2">:</span>
-                        <span className="text-danger">4</span>
+                        <span className="text-danger">{totalprice}</span>
                       </th>
                     </tr>
                   </tfoot>
