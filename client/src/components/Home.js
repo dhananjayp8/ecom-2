@@ -58,7 +58,7 @@ const Home = () => {
                         className="mt-2 mb-2"
                         onClick={() => send(element)}
                       >
-                        Add TO Cart
+                        Add To Cart
                       </Button>
                       <img src={element.delimg} className="laimg" alt="" />
                     </div>
