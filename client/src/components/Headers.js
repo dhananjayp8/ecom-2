@@ -17,7 +17,7 @@ const Headers = () => {
       >
         <Container>
           <NavLink to="/" className="text-decoration-none text-light mx-2">
-            <Navbar.Brand href="#home">Online Food</Navbar.Brand>
+            <Navbar.Brand href="#home">Food-Cart</Navbar.Brand>
           </NavLink>
           <NavLink to="/cart" className="text-decoration-none text-light mx-2">
             <div id="ex4">
